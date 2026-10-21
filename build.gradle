@@ -1,6 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
+        maven { url = "https://maven.minecraftforge.net" }
         maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
@@ -18,14 +19,13 @@ sourceCompatibility = targetCompatibility = '1.8'
 compileJava.options.encoding = 'UTF-8'
 
 minecraft {
-    version = "1.12.2-14.23.5.2860"
+    version = "1.12.2-14.23.5.2859"   // ← вот тут
     runDir = "run"
     mappings = "stable_39"
 }
 
 repositories {
     mavenCentral()
-    maven { url "https://files.minecraftforge.net/maven" }
     maven { url "https://maven.cleanroommc.com" }
     maven { url "https://repo.spongepowered.org/maven" }
 }
@@ -36,9 +36,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes(
-            'MixinConfigs': 'mixins.renderscaleproto.json'
-        )
+        attributes('MixinConfigs': 'mixins.renderscaleproto.json')
     }
 }
 
