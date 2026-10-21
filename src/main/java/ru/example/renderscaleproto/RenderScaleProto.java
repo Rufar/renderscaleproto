@@ -2,6 +2,8 @@ package ru.example.renderscaleproto;
 
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import ru.example.renderscaleproto.config.RenderScaleConfig;
 
 @Mod(
     modid = RenderScaleProto.MODID,
@@ -16,4 +18,9 @@ public class RenderScaleProto {
     public static final String VERSION = "0.0.1";
 
     public static Framebuffer worldBuffer;
+
+    @Mod.EventHandler
+    public void preInit(FMLPreInitializationEvent event) {
+        RenderScaleConfig.load(event.getSuggestedConfigurationFile());
+    }
 }
