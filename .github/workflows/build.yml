@@ -1,0 +1,19 @@
+name: build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 8
+      - run: |
+          wget -q https://services.gradle.org/distributions/gradle-4.4.1-bin.zip
+          unzip -q gradle-4.4.1-bin.zip -d /opt
+      - run: /opt/gradle-4.4.1/bin/gradle setupDecompWorkspace build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: renderscaleproto
+          path: build/libs/*.jar
