@@ -1,0 +1,10 @@
+[
+  {
+    "modid": "renderscaleproto",
+    "name": "RenderScale Prototype",
+    "description": "Прототип: мир рисуется в уменьшенном разрешении, интерфейс остаётся чётким.",
+    "version": "${version}",
+    "mcversion": "1.12.2",
+    "authorList": ["example"]
+  }
+]
