@@ -4,7 +4,7 @@ buildscript {
         maven { url = "https://files.minecraftforge.net/maven" }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:2.1-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 
@@ -25,6 +25,7 @@ minecraft {
 
 repositories {
     mavenCentral()
+    maven { url "https://files.minecraftforge.net/maven" }
     maven { url "https://maven.cleanroommc.com" }
     maven { url "https://repo.spongepowered.org/maven" }
 }
