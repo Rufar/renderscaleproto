@@ -25,11 +25,11 @@ minecraft {
 
 repositories {
     mavenCentral()
+    maven { url "https://maven.cleanroommc.com" }
     maven { url "https://repo.spongepowered.org/maven" }
 }
 
 dependencies {
-    // MixinBooter даёт миксины на Forge 1.12.2. Версию проверьте в README проекта.
     deobfCompile "zone.rong:mixinbooter:7.1"
 }
 
