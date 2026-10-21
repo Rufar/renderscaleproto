@@ -18,6 +18,7 @@ public class MixinEntityRenderer {
     private void rsproto$beginWorld(float partialTicks, long finishTimeNano, CallbackInfo ci) {
         float currentScale = RenderScaleConfig.scale;
 
+        // Если масштаб 1.0, рендерим напрямую без FBO
         if (currentScale >= 0.99f) {
             return;
         }
@@ -26,6 +27,7 @@ public class MixinEntityRenderer {
         int targetW = Math.max((int)(mc.displayWidth * currentScale), 1);
         int targetH = Math.max((int)(mc.displayHeight * currentScale), 1);
 
+        // Пересоздание фреймбуфера при изменении разрешения экрана или ползунка конфига
         if (RenderScaleProto.worldBuffer == null) {
             RenderScaleProto.worldBuffer = new Framebuffer(targetW, targetH, true);
         } else if (RenderScaleProto.worldBuffer.framebufferWidth != targetW ||
@@ -35,6 +37,7 @@ public class MixinEntityRenderer {
 
         Framebuffer fb = RenderScaleProto.worldBuffer;
         fb.framebufferClear();
+        // Биндим наш уменьшенный FBO и принудительно выставляем уменьшенный viewport OpenGL
         fb.bindFramebuffer(true);
         GlStateManager.viewport(0, 0, targetW, targetH);
     }
@@ -49,10 +52,14 @@ public class MixinEntityRenderer {
         Minecraft mc = Minecraft.getMinecraft();
         Framebuffer fb = RenderScaleProto.worldBuffer;
 
+        // Отвязываем наш FBO и возвращаем стандартный фреймбуфер игры
         fb.unbindFramebuffer();
         mc.getFramebuffer().bindFramebuffer(true);
+
+        // Восстанавливаем полный экранный viewport для нативного апскейла и отрисовки GUI
         GlStateManager.viewport(0, 0, mc.displayWidth, mc.displayHeight);
 
+        // Отрисовываем и растягиваем текстуру мира на весь экран
         GlStateManager.enableBlend();
         GlStateManager.tryBlendFuncSeparate(
             GlStateManager.SourceFactor.SRC_ALPHA,
