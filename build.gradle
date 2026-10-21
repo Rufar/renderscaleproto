@@ -1,19 +1,7 @@
-buildscript {
-    repositories {
-        mavenCentral()
-        maven { url = "https://maven.minecraftforge.net" }
-        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
-        maven { url = "https://maven.cleanroommc.com" }
-        maven { url = "https://jitpack.io" }
-    }
-    dependencies {
-        classpath 'com.gtnewhorizons:retrofuturagradle:1.3.16'
-        classpath 'com.github.GTNewHorizons:ForgeGradle:2.3-SNAPSHOT'
-    }
+plugins {
+    id 'java'
+    id 'com.gtnewhorizons.retrofuturagradle' version '1.4.9' // актуальная стабильная версия для 1.12.2
 }
-
-apply plugin: 'java'
-apply plugin: 'com.gtnewhorizons.retrofuturagradle'
 
 version = "0.0.1"
 group = "ru.example.renderscaleproto"
@@ -21,7 +9,7 @@ archivesBaseName = "renderscaleproto"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+        languageVersion.set(JavaLanguageVersion.of(8)) // мод компилируется под Java 8, как и требуется для 1.12.2
     }
 }
 
@@ -30,20 +18,22 @@ minecraft {
     mcpMappingChannel = 'stable'
     mcpMappingVersion = '39'
     username = 'Developer'
-
-    // Отключаем лишнее для CI
     useDependencyAccessTransformers = false
 }
 
 repositories {
     mavenCentral()
-    maven { url "https://maven.cleanroommc.com" }
-    maven { url "https://repo.spongepowered.org/maven" }
-    maven { url "https://jitpack.io" }
+    maven { name = 'CleanroomMC Maven'; url = 'https://maven.cleanroommc.com' }
+    maven { name = 'SpongePowered Maven'; url = 'https://repo.spongepowered.org/maven' }
 }
 
 dependencies {
+    // MixinBooter обычно нужен как implementation или deobf-зависимость; для 1.12.2 чаще используют compileOnly/implementation
     implementation 'zone.rong:mixinbooter:7.1'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
 
 jar {
@@ -56,18 +46,7 @@ jar {
 
 processResources {
     inputs.property "version", project.version
-    from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
+    filesMatching('mcmod.info') {
         expand 'version': project.version
-    }
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
-    }
-}
-
-// Для CI: не запускаем decomp, только сборка
-tasks.register('setupCIWorkspace') {
-    doLast {
-        println "RFG: CI workspace ready (no decomp needed)"
     }
 }
