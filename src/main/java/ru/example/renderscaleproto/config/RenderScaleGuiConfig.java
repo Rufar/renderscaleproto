@@ -1,9 +1,8 @@
 package ru.example.renderscaleproto.config;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import ru.example.renderscaleproto.RenderScaleProto;
@@ -24,7 +23,7 @@ public class RenderScaleGuiConfig extends GuiConfig {
 
     private static List<IConfigElement> getConfigElements() {
         return new ConfigElement(
-            ConfigManager.getConfig(RenderScaleProto.MODID, Config.Type.INSTANCE)
+            RenderScaleConfig.config.getCategory(Configuration.CATEGORY_GENERAL)
         ).getChildElements();
     }
 }
